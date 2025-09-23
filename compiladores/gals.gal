@@ -1,0 +1,108 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Full
+Input = String
+Parser = SLR
+#RegularDefinitions
+letra: [a-zA-Z]
+digito: [0-9]
+#Tokens
+function
+int
+float
+if
+else
+while
+for
+read
+write
+"="
+"+"
+"-"
+"*"
+"/"
+">"
+"<"
+">="
+"<="
+"=="
+"!="
+"!"
+"("
+")"
+"{"
+"}"
+";"
+","
+id: [a-zA-Z][a-zA-Z0-9_]*
+num: [0-9]+(\.[0-9]+)?
+string: \"[^\"]*\"
+[ \t\n\r]+
+#NonTerminals
+
+#Grammar
+<programa> ::= <declaracoes>
+
+<declaracoes> ::= <declaracao> <declaracoes> 
+                | <declaracao>
+
+<declaracao> ::= <funcao>
+               | <dec_variavel>
+               | <comando>
+
+<funcao> ::= function id "(" <parametros> ")" "{" <comandos> "}"
+
+<parametros> ::= <tipo> id
+               | <tipo> id "," <parametros>
+               | #
+
+<dec_variavel> ::= <tipo> id ";"
+
+<tipo> ::= int | float
+
+<comandos> ::= <comando> <comandos>
+             | <comando>
+
+<comando> ::= <atribuicao>
+            | <if>
+            | <while>
+            | <for>
+            | <leitura>
+            | <escrita>
+
+<atribuicao> ::= id "=" <expressao> ";"
+
+<if> ::= if "(" <condicao> ")" "{" <comandos> "}"
+       | if "(" <condicao> ")" "{" <comandos> "}" else "{" <comandos> "}"
+
+<while> ::= while "(" <condicao> ")" "{" <comandos> "}"
+
+<for> ::= for "(" <atribuicao> <condicao> ";" id "++" ")" "{" <comandos> "}"
+
+<leitura> ::= read "(" id ")" ";"
+
+<escrita> ::= write "(" <expressao> ")" ";"
+
+<expressao> ::= <termo> <exp_resto>
+
+<exp_resto> ::= "+" <termo> <exp_resto>
+              | "-" <termo> <exp_resto>
+              | #
+
+<termo> ::= <fator> <termo_resto>
+
+<termo_resto> ::= "*" <fator> <termo_resto>
+                | "/" <fator> <termo_resto>
+                | #
+
+<fator> ::= id | num | "(" <expressao> ")"
+
+<condicao> ::= <expressao> <comparador> <expressao>
+
+<comparador> ::= ">" | "<" | ">=" | "<=" | "==" | "!="
