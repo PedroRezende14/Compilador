@@ -1,0 +1,116 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Full
+Input = String
+Parser = SLR
+#RegularDefinitions
+letra = [A-Za-z]
+digito = [0-9]
+espaco = [ \t\n\r]
+id = {letra}({letra}|{digito})*
+const = {digito}+
+caracter = '({letra}|{digito})'
+string = \"[^\"]*\"
+#Tokens
+# Tokens
+# Palavras Reservadas
+programa = "programa"
+int = "int"
+char = "char"
+array = "array"
+string = "string"
+while = "while"
+if = "if"
+else = "else"
+for = "for"
+leia = "leia"
+imprima = "imprima"
+funcao = "funcao"
+
+# Delimitadores
+pv = ";"
+ap = "("
+fp = ")"
+ac = "{"
+fc = "}"
+igual = "="
+maior = ">"
+menor = "<"
+maiorIgual = ">="
+menorIgual = "<="
+igualIgual = "=="
+diferente = "!="
+mais = "+"
+menos = "-"
+mult = "*"
+div = "/"
+mais_m = "++"
+menos_m = "--"
+
+# Outros
+id = {id}
+const = {const}
+caracter = {caracter}
+string = {string}
+
+# Ignorar
+espaco = {espaco}
+#NonTerminals
+
+#Grammar
+
+PROGRAMA -> programa id ( LISTA_VAR ) { LISTA_COMANDOS }   (1)
+LISTA_VAR -> ?                                             (2)
+LISTA_VAR -> VAR LISTA_VAR                                 (3)
+VAR -> TIPO id                                             (4)
+TIPO -> int                                                (5)
+TIPO -> char                                               (6)
+TIPO -> array                                              (7)
+TIPO -> string                                             (8)
+ATRIBUTO -> id                                             (9)
+ATRIBUTO -> const                                          (10)
+ATRIBUTO -> caracter                                       (11)
+ATRIBUTO -> string                                         (12)
+LISTA_COMANDOS -> ?                                        (13)
+LISTA_COMANDOS -> COMANDOS LISTA_COMANDOS                  (14)
+WHILE -> while ( COMPARACAO ) { LISTA_COMANDOS }           (15)
+IF -> if ( COMPARACAO ) { LISTA_COMANDOS } ELSE            (16)
+FOR -> for ( ATRIBUICAO ; COMPARACAO ; OP_INCREMENTO ) { LISTA_COMANDOS } (17)
+ATRIBUICAO -> id = ATRIBUTO ;                              (18)
+LEITURA -> leia ( ATRIBUTO ) ;                             (19)
+IMPRESSAO -> imprima ( ATRIBUTO ) ;                        (20)
+INCREMENTO -> id OP_INCREMENTO ;                           (21)
+OPERACAO -> ATRIBUTO OPERADOR ATRIBUTO                     (22)
+OP_INCREMENTO -> ++                                        (23)
+OP_INCREMENTO -> --                                        (24)
+OPERADOR -> +                                              (25)
+OPERADOR -> -                                              (26)
+OPERADOR -> *                                              (27)
+OPERADOR -> /                                              (28)
+COMPARADOR -> >                                            (29)
+COMPARADOR -> <                                            (30)
+COMPARADOR -> >=                                           (31)
+COMPARADOR -> <=                                           (32)
+COMPARADOR -> ==                                           (33)
+COMPARADOR -> !=                                           (34)
+ELSE -> ?                                                  (35)
+ELSE -> else { LISTA_COMANDOS }                            (36)
+COMPARACAO -> id COMPARADOR ATRIBUTO                       (37)
+DEC_VAR -> TIPO id ;                                       (38)
+FUNCAO -> funcao id ( LISTA_VAR ) { LISTA_COMANDOS }       (39)
+COMANDOS -> WHILE                                          (40)
+COMANDOS -> IF                                             (41)
+COMANDOS -> FOR                                            (42)
+COMANDOS -> ATRIBUICAO                                    (43)
+COMANDOS -> LEITURA                                        (44)
+COMANDOS -> IMPRESSAO                                     (45)
+COMANDOS -> INCREMENTO                                     (46)
+COMANDOS -> OPERACAO                                       (47)
+COMANDOS -> DEC_VAR                                        (48)
+COMANDOS -> FUNCAO                                         (49)
